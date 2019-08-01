@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,31 +14,19 @@
  * limitations under the License.
  */
 
-apply plugin: "java-platform"
-apply plugin: "maven-publish"
+package com.netflix.spinnaker.echo.scm.github;
 
-javaPlatform {
-  allowDependencies()
-}
+import com.netflix.spinnaker.echo.model.Event;
+import java.util.Map;
 
+public interface GithubWebhookEvent {
+  String getFullRepoName(Event event, Map postedEvent);
 
-if (Boolean.valueOf(enablePublishing)) {
-  publishing {
-    publications {
-      nebula(MavenPublication) {
-        from components.javaPlatform
-      }
-    }
-  }
-}
+  String getRepoProject(Event event, Map postedEvent);
 
-dependencies {
-  api(platform("com.netflix.spinnaker.kork:kork-bom:${korkVersion}"))
+  String getSlug(Event event, Map postedEvent);
 
-  constraints {
-    rootProject
-      .subprojects
-      .findAll { it != project }
-      .each { api(project(it.path)) }
-  }
+  String getHash(Event event, Map postedEvent);
+
+  String getBranch(Event event, Map postedEvent);
 }
